@@ -5,7 +5,8 @@ on:
         branches:
             - main  # Triggers deployment when code is merged into main
         paths:
-            - "terraform/*"
+            - "*.tf"
+            - "*.tfvars"
     
 
 # CRITICAL: These permissions are required to request the OIDC JWT token from GitHub
