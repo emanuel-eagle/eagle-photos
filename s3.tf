@@ -1,3 +1,3 @@
-resource "aws_s3_bucket" "s3" {
-  bucket = "this-is-a-test-s3-bucket-asfasdfasdfasd"
+resource "aws_s3_bucket" "final_bucket" {
+  bucket = "post-processing-bucket"
 }
