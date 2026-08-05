@@ -1,0 +1,57 @@
+name: OpenTofu Deploy to AWS
+
+on:
+    push:
+        branches:
+            - main  # Triggers deployment when code is merged into main
+        paths:
+            - "terraform/*"
+    
+
+# CRITICAL: These permissions are required to request the OIDC JWT token from GitHub
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }} # Replace with your target AWS Region
+  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }} # Replace with your IAM Role ARN
+
+jobs:
+  opentofu-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Install OpenTofu using the official setup action
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.x # Explicitly lock the OpenTofu version
+
+      # 3. Authenticate to AWS using OIDC (No long-lived secrets required)
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          audience: sts.amazonaws.com
+
+      # 4. Initialize the OpenTofu directory (Downloads providers and backends)
+      - name: OpenTofu Init
+        run: tofu init
+
+      # 5. Optional: Validate the configuration formatting
+      - name: OpenTofu Format Check
+        run: tofu fmt -check
+
+      # 6. Generate an execution plan to verify changes
+      - name: OpenTofu Plan
+        run: tofu plan
+
+      # 7. Apply the changes automatically (Only on the main branch)
+      - name: OpenTofu Apply
+        if: github.ref == 'refs/heads/main'
+        run: tofu apply -auto-approve
