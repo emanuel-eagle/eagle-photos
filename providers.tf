@@ -13,9 +13,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "tf-state-file-eagle-photos"
-    key            = "environments/production/terraform.tfstate"
-    region         = "us-east-2"
-    encrypt        = true
+    bucket  = "tf-state-file-eagle-photos"
+    key     = "environments/production/terraform.tfstate"
+    region  = "us-east-2"
+    encrypt = true
   }
 }
