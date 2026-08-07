@@ -1,9 +1,9 @@
-module "post-processing-bucket" {
-  source = "./modules/s3"
-  name   = "post-processing-bucket"
-}
+# module "post-processing-bucket" {
+#   source = "./modules/s3"
+#   name   = "post-processing-bucket"
+# }
 
-module "mounted-bucket" {
-  source = "./modules/s3"
-  name   = "mounted-bucket"
-}
+# module "mounted-bucket" {
+#   source = "./modules/s3"
+#   name   = "mounted-bucket"
+# }
