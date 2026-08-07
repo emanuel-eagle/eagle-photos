@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "repo" {
-  name                 = "eagle-photos-registry"
-  image_tag_mutability = "IMMUTABLE"
-
+module "ecr" {
+    source = "./modules/ecr"
+    primary_bucket_name = "eagle-photos-repo"
+    secondary_bucket_name = "eagle-photos-repo"
 }
