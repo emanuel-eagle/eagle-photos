@@ -7,7 +7,7 @@ on:
         paths:
             - "*.tf"
             - "*.tfvars"
-            - "modules/*"
+            - "modules/*/*"
     
 
 # CRITICAL: These permissions are required to request the OIDC JWT token from GitHub
