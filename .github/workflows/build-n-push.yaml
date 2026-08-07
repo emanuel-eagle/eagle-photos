@@ -30,11 +30,17 @@ jobs:
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
+
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
         
       - name: Build and push the tagged docker image to Amazon ECR
         env:
-            ECR_REPO: ${{secrets.AWS_ECR_REGISTRY}}
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPO: ${{secrets.AWS_ECR_REPO}}
             IMAGE_TAG: ${{ github.sha }}
         run: |
-            docker build -t $ECR_REPO:$IMAGE_TAG ./test
-            docker push $ECR_REPO:$IMAGE_TAG
+            docker build -t $REGISTRY/$ECR_REPO:$IMAGE_TAG ./test
+            docker push $REGISTRY/$ECR_REPO:$IMAGE_TAG
