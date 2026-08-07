@@ -1,3 +1,4 @@
-resource "aws_s3_bucket" "final_bucket" {
-  bucket = "post-processing-bucket"
+resource "aws_s3_bucket" "buckets" {
+  for_each = toset(var.s3_buckets)
+  bucket = "eagle-photos-${each.value}"
 }
