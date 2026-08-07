@@ -1,4 +1,4 @@
-name: OpenTofu Deploy to AWS
+name: ECR Build and Push
 
 on:
     push:
